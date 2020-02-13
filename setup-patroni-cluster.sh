@@ -2,8 +2,6 @@
 
 set -x
 
-kubectl create namespace zalando-postgres
-
 kubectl create -f patroni/configmap.yaml -n zalando-postgres
 
 kubectl create -f patroni/operator-service-account-rbac.yaml -n zalando-postgres
