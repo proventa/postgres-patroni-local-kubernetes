@@ -24,7 +24,7 @@ Setup a postgres ha-cluster with patroni on a local multi-node kubernetes cluste
 
 ```console
 curl.exe -Lo kind-windows-amd64.exe https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-windows-amd64
-Move-Item .\kind-windows-amd64.exe c:\user\username\kind\kind.exe
+Move-Item .\kind-windows-amd64.exe $pwd\kind.exe
 ```
 
   * `bash` and type in
@@ -36,6 +36,7 @@ mv ./kind /kubernetes-local/kind
 ```
 
 * set environment variables for `kind`
+  * Windows (as Administrator): `setx kind "$pwd\kind.exe" /M` 
   * linux: `cp ~/kubernetes-local/kind/./kind /usr/local/bin` and add path to `.zshrc` or `.bashrc`
 * test kind: type in `kind` in `powershell` or `bash`
 
