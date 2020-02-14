@@ -36,7 +36,7 @@ mv ./kind /kubernetes-local/kind
 ```
 
 * set environment variables for `kind`
-  * Windows (as Administrator): `setx kind "$pwd\kind.exe" /M` 
+  * Windows (as Administrator): `[Environment]::SetEnvironmentVariable("Path", $env:Path + ";$pwd", "User")` 
   * linux: `cp ~/kubernetes-local/kind/./kind /usr/local/bin` and add path to `.zshrc` or `.bashrc`
 * test kind: type in `kind` in `powershell` or `bash`
 
