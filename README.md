@@ -1,6 +1,6 @@
 # postgres-patroni-local-kubernetes
 
-Setup a postgres ha-cluster with patroni on a local multi-node kubernetes cluster on windows and linux mint.
+Setup a PostgreSQL-HA-Cluster with Patroni on a local multi-node kubernetes cluster on windows and linux mint.
 
 ## Setup a local multi-node k8s cluster
 
@@ -10,24 +10,22 @@ Setup a postgres ha-cluster with patroni on a local multi-node kubernetes cluste
 
 * Hyper-V enabled (Windows)
 * [install Docker Desktop for Windows](https://docs.docker.com/docker-for-windows/)
-* [install Docker on Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/)  
-* [Settings for Docker Desktop](https://kind.sigs.k8s.io/docs/user/quick-start/)
-  * enable "linux containers"
+  * Enable "linux containers"
+  * [Settings for Docker Desktop](https://kind.sigs.k8s.io/docs/user/quick-start/)
+* [Install Docker on Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
 #### Basic kind installation and configuration
 
-* install open source project [kind](https://github.com/kubernetes-sigs/kind/)
-  * create directory for kind
-    * windows: "c:\user\username\kind"
-    * linux: `mkdir -p /kubernetes-local/kind`
-  * `powershell` and type in
+* Install the open source project [kind](https://github.com/kubernetes-sigs/kind/)
+  * Create directory for kind
+    * Windows: "c:\user\username\kind"
 
 ```console
 curl.exe -Lo kind-windows-amd64.exe https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-windows-amd64
 Move-Item .\kind-windows-amd64.exe $pwd\kind.exe
 ```
 
-  * `bash` and type in
+   * Linux: `mkdir -p /kubernetes-local/kind`
 
 ```console
 curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-$(uname)-amd64"
@@ -35,17 +33,17 @@ chmod +x ./kind
 mv ./kind /kubernetes-local/kind
 ```
 
-* set environment variables for `kind`
+* Set environment variables for `kind`
   * Windows (as Administrator): `[Environment]::SetEnvironmentVariable("Path", $env:Path + ";$pwd", "User")` 
   * linux: `cp ~/kubernetes-local/kind/./kind /usr/local/bin` and add path to `.zshrc` or `.bashrc`
-* test kind: type in `kind` in `powershell` or `bash`
+* Test if kind is working: type in `kind` in `powershell` or `bash`
 
 ### Sample Multi-node cluster (1 master, 2 workers)
 
-* [multinode-cluster](https://kind.sigs.k8s.io/docs/user/quick-start/) (Section: Advanced/Configuring Your kind Cluster)
-  * create `kind-example-config.yaml` under c:/user/username/kind
+* [Multinode-cluster](https://kind.sigs.k8s.io/docs/user/quick-start/) (Section: Advanced/Configuring Your kind Cluster)
+  * Create `kind-example-config.yaml` under c:/user/username/kind
 
-kind-example-config.yaml
+sample kind-example-config.yaml
 
 ```yaml
 ## Three node (two workers) k8s-cluster config
@@ -57,18 +55,18 @@ nodes:
 - role: worker
 ```
 
-* create multi-node cluster (this will take a few minutes): `kind create cluster --config <kind-example-config.yaml-path>` (Docker must be running!)
-* test running cluster: kubectl cluster-info --context kind-kind
+* Create multi-node cluster (this will take a few minutes): `kind create cluster --config <kind-example-config.yaml-path>` (Docker must be running!)
+* Test running cluster: kubectl cluster-info --context kind-kind
 
 ## Install and configure Kubernetes Dashboard
 
-* install [kubernetes-dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/) and expose kubernetes dashboard on port 8001
+* Install [kubernetes-dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/) and expose kubernetes dashboard on port 8001
 
-1. command: `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml`
-1. command: `kubectl proxy`
-1. access [kuberentes dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
+1. Command: `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml`
+1. Command: `kubectl proxy`
+1. Access [kuberentes dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
 
-* access-token for access: `kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')`
+* Access-token for access: `kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')`
 * sample output:
 
 ```console
@@ -88,9 +86,9 @@ token:      eyJhbGciOiJSUzI1NiIsImtpZCI6InpRV1h1dmpYM25YdUNQeFF6N2hWUkZiQlFmdEw1
 
 ```
 
-* copy last access-token (`token:`) on output to web-ui: token field
+* Copy last access-token (`token:`) on output to web-ui: token field
 
-* alias for "kubectl" for windows powershell `Set-Alias kc "C:\path\kubectl.exe"`
+* Alias for "kubectl" for windows powershell `Set-Alias kc "C:\path\kubectl.exe"`
 
 ### Troubleshooting
 
@@ -112,6 +110,10 @@ clusterrole: kubernetes-dashboard
 ```
 
 ## Setup Postgres-HA with Patroni
+
+In the `patroni` folder are YAML-Manifest and a script for the automated deployment of on PostgreSQL-HA-Cluster with patroni.
+
+### Steps
 
 1. clone this repository
 1. `chmod +x setup-patroni-cluster.sh`
