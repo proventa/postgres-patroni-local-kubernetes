@@ -119,3 +119,11 @@ In the `patroni` folder are YAML-Manifest and a script for the automated deploym
 1. `chmod +x setup-patroni-cluster.sh`
 1. `kubectl create namespace zalando-postgres`
 1. `./setup-patroni-cluster.sh`
+
+### Useful
+
+* forward a port from a deployment
+```bash
+kubectl get pods -n <namespace>
+kubectl port-forward <pod-name> hostport:pod-port -n namespace
+```
